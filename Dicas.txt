@@ -1,0 +1,30 @@
+Tutorial
+-> https://medium.com/tech-tajawal/elk-stack-docker-playground-for-devops-221179ca00dd (tutorial muito bom)
+-> https://sysadminwork.com/dashboard-for-nginx-logs-with-kibanaelasticsearch/
+
+Para simular o envio dos arquivos para parsear rodar o comando em uma janela "cat textfile | nc host port"
+-> cat nginx_acess1.log | nc localhost 5000
+
+Se der algum erro de 95% de uso rodar o comando
+-> curl -XPUT -H "Content-Typlocalhost:9200/_cluster/settings -d '{"persistent" : {"cluster.routing.allocation.disk.threshold_enabled": false}}'
+
+Se der acesso negado rodar o comando
+-> curl -XPUT -H "Content-Typhttp://localhost:9200/_all/_settings -d '{"index.blocks.read_only_allow_delete": null}'
+
+Na instalação rodei esse comando pra criar o index
+-> curl -XPUT -D- 'http://localhost:9200/.kibana/doc/index-pattern:docker-elk' \
+       -H 'Content-Type: application/json' \
+       -d '{"type": "index-pattern", "index-pattern": {"title": "logstash-*", "timeFieldName": "@timestamp"}}'
+Obs: Depois entrei nele pelo Kibana e falei que ele era o padrão, depois disso consegui montar visões de gráfico.
+
+Para rodar
+
+$cd ~/projetos/docker-elk
+$docker-compose up --build
+
+===
+Obs importante
+===
+
+Sempre que eu mudar a estrutura no arquivo "logstash.conf" tenho que ir no Kibana na aba Management-> (Acessar o index que quero) -> CLicar em Refresh field list, depois disso eles vão aparacer
+na parte de montagem dos gráficos e ai posso fazer as agregações.
